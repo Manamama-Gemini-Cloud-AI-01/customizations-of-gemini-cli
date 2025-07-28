@@ -1,5 +1,5 @@
 # Experiments with Editing Tools in Gemini CLI
-Ver. 1.2
+Ver. 1.3
 
 This document summarizes observations and insights gained from using file editing tools within the Gemini CLI, specifically focusing on `replace`, `edit_file`, and `write_file`, and how their operations are reflected in the Terminal User Interface (TUI).
 
@@ -11,6 +11,8 @@ The `replace` tool is designed for highly precise, literal string substitutions.
 *   Even with careful attempts to construct the `old_string` (e.g., by reading the file content), achieving a perfect, literal match for multi-line blocks or sections with subtle formatting differences proved extremely challenging.
 *   Failure to achieve an exact match results in the tool reporting 0 occurrences found, and no edits are made.
 *   This brittleness makes `replace` difficult to use reliably for complex, multi-line modifications.
+*   **IRL Test Result (Test Case 2):** Worked as expected when `old_string` was meticulously crafted. The TUI showed the "Edit" tool call, a clear diff, and prompted for "Apply this change?".
+*   **IRL Test Result (Test Case 3):** Failed as expected when `old_string` was intentionally made brittle (e.g., by omitting a line). The `replace` tool reported "0 occurrences found". This confirms its strict matching.
 
 ## The Behavior of `edit_file` (Functionally the `replace` tool)
 
@@ -20,6 +22,8 @@ The `edit_file` tool is the actual function call Gemini makes to perform line-ba
 *   When `edit_file` is called with `dryRun=True`, the tool calculates the diff of the proposed changes and returns it. The Gemini CLI's TUI then presents this diff to the user for explicit approval *before* any changes are applied to the file on disk. This is the primary mechanism for pre-approval diffs.
 *   If approved, the tool is then called again with `dryRun=False` (or omitted) to apply the changes.
 *   This tool is the **preferred tool for precise, line-based code modifications** where user review and pre-approval of the exact changes are critical. It offers a robust way to perform edits while maintaining transparency and user control.
+*   **IRL Test Result (Test Case 4 - Dry Run):** Worked as expected. The TUI showed the `edit_file` tool call with `dryRun=True`, a clear diff, and prompted for "Apply this change?". The file remained unchanged on disk.
+*   **IRL Test Result (Test Case 5 - Execution):** Worked as expected. The TUI showed the `edit_file` tool call, a clear diff, and prompted for "Apply this change?". The file was modified on disk.
 
 ## The Robustness of "Read, Modify in Memory, Overwrite" (`write_file` tool)
 
@@ -35,7 +39,8 @@ When `replace` (or `edit_file` with complex `oldText` matching) proved too britt
 *   **TUI Diff Presentation (The Key Benefit):** After a successful `write_file` operation, the Gemini CLI's TUI performs an **internal comparison** between the file's state *before* the write and *after* the write. Because the content provided was a minimal transformation of the original, the TUI's intelligent diffing algorithm can accurately identify and display only the actual changes (insertions, deletions, modifications).
 *   **Key Distinction:** This diff is presented as *information* about what just happened *after* the file has been modified (upon tool call approval), not as a separate step requiring explicit acceptance *before* the file is changed (as is the case with `edit_file` when used with `dryRun=True`).
 *   **User Perception:** Despite being a full overwrite operation, the TUI's intelligent diffing makes it *appear* as if fine-grained edits were made, providing clear visual feedback to the user.
+*   **IRL Test Result (Test Case 1):** Worked as expected. The TUI showed the `WriteFile` tool call, a clear diff, and prompted for "Allow modification: Yes, No".
 
 ## Conclusion
 
-While `replace` and `edit_file` offer fine-grained control and pre-approval diffs, their strict matching requirements can make them challenging for complex multi-line modifications. The "read, modify in memory, overwrite" strategy using `write_file` is the **recommended and most effective method** for the AI to update file content. This approach leverages the Gemini CLI's intelligent TUI diffing to provide clear, reviewable feedback, ensuring transparency and minimizing frustration for both the AI and the user.
+The Gemini CLI offers powerful file editing capabilities through `write_file` and `edit_file` (functionally `replace`). While `edit_file` with `dryRun=True` is ideal for pre-approval diffs of precise, line-based changes, the "read, modify in memory, overwrite" strategy using `write_file` is a robust alternative for complex modifications, leveraging the TUI's intelligent diffing for clear post-operation feedback. The choice of tool depends on the specific task's complexity and the desired level of pre-modification review.
