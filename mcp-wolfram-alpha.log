@@ -39,3 +39,69 @@
 2025-07-28T10:37:46.398Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
 2025-07-28T10:37:46.398Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
 2025-07-28T10:37:46.398Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:01:11.906Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T17:01:11.906Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T17:01:11.907Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T17:01:11.907Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T17:01:11.907Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T17:01:11.907Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T17:01:11.907Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T17:01:11.907Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T17:01:11.907Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T17:01:11.907Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:04:56.860Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-28T17:05:48.350Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T17:05:48.350Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T17:05:48.350Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T17:05:48.350Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T17:05:48.350Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T17:05:48.350Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T17:05:48.350Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T17:05:48.350Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T17:05:48.350Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T17:05:48.350Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:08:06.298Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-28T17:14:37.367Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T17:14:37.368Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T17:14:37.368Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T17:14:37.368Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T17:14:37.368Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T17:14:37.368Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T17:14:37.368Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T17:14:37.368Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T17:14:37.368Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T17:14:37.368Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:15:16.548Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-28T17:18:40.317Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T17:18:40.318Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T17:18:40.318Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T17:18:40.318Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T17:18:40.318Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T17:18:40.318Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T17:18:40.318Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T17:18:40.318Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T17:18:40.318Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T17:18:40.318Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:20:21.612Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-28T17:29:44.689Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T17:29:44.690Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T17:29:44.690Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T17:29:44.690Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T17:29:44.690Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T17:29:44.690Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T17:29:44.690Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T17:29:44.690Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T17:29:44.690Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T17:29:44.690Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T17:35:40.969Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-28T18:18:17.763Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-28T18:18:17.763Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-28T18:18:17.763Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-28T18:18:17.763Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-28T18:18:17.763Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-28T18:18:17.764Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-28T18:18:17.764Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-28T18:18:17.764Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-28T18:18:17.764Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-28T18:18:17.764Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-28T20:48:51.627Z	[34mINFO[0m	server/server.go:70	server shutting down
