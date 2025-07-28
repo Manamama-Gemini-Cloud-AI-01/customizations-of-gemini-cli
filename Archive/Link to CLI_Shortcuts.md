@@ -1,1 +1,0 @@
-/home/zezen/Downloads/GitHub/gemini-cli/Archive/CLI_Shortcuts.md
