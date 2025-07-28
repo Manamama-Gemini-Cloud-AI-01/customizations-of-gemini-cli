@@ -17,71 +17,7 @@ import { ShellTool } from '../tools/shell.js';
 import { WriteFileTool } from '../tools/write-file.js';
 import process from 'node:process';
 import { isGitRepository } from '../utils/gitUtils.js';
-import { MemoryTool } from '../tools/memoryTool.js';
-
-function resolvePath(filePath: string): string {
-  if (filePath.startsWith('~')) {
-    return path.join(os.homedir(), filePath.slice(1));
-  }
-  return path.resolve(filePath);
-}
-
-function getSystemPrompt(): string {
-  const systemPromptFromEnv = process.env.GEMINI_SYSTEM_MD;
-  const writeSystemPromptTo = process.env.GEMINI_WRITE_SYSTEM_MD;
-
-  const defaultConfigPath = path.join(process.cwd(), '.gemini', 'system.md');
-
-  if (writeSystemPromptTo) {
-    let writePath: string;
-    if (writeSystemPromptTo === 'true' || writeSystemPromptTo === '1') {
-      writePath = defaultConfigPath;
-    } else {
-      writePath = resolvePath(writeSystemPromptTo);
-    }
-    const dir = path.dirname(writePath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(writePath, DEFAULT_SYSTEM_PROMPT);
-  }
-
-  if (
-    !systemPromptFromEnv ||
-    systemPromptFromEnv.toLowerCase() === 'false' ||
-    systemPromptFromEnv === '0'
-  ) {
-    return DEFAULT_SYSTEM_PROMPT;
-  }
-
-  if (systemPromptFromEnv.toLowerCase() === 'true' || systemPromptFromEnv === '1') {
-    if (!fs.existsSync(defaultConfigPath)) {
-      const dir = path.dirname(defaultConfigPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-      fs.writeFileSync(defaultConfigPath, DEFAULT_SYSTEM_PROMPT);
-    }
-    return fs.readFileSync(defaultConfigPath, 'utf-8');
-  }
-
-  const customPath = resolvePath(systemPromptFromEnv);
-  if (!fs.existsSync(customPath)) {
-    throw new Error(`System prompt file not found at ${customPath}`);
-  }
-  return fs.readFileSync(customPath, 'utf-8');
-}
-
-export function getCoreSystemPrompt(userMemory?: string): string {
-  const basePrompt = getSystemPrompt();
-  const memorySuffix =
-    userMemory && userMemory.trim().length > 0
-      ? `\n\n---\n\n${userMemory.trim()}`
-      : '';
-
-  return `${basePrompt}${memorySuffix}`;
-}
-
+import { MemoryTool, GEMINI_CONFIG_DIR } from '../tools/memoryTool.js';
 
 const DEFAULT_SYSTEM_PROMPT = `
 You are an interactive CLI agent specializing in software engineering tasks. Your primary goal is to help users safely and efficiently, adhering strictly to the following instructions and utilizing your available tools.
