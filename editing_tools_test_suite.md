@@ -1,5 +1,5 @@
 # Editing Tools Test Suite for Gemini CLI
-Ver. 1.0
+Ver. 1.1
 
 This document outlines a test suite for evaluating the behavior and effectiveness of file editing tools within the Gemini CLI, specifically focusing on `write_file`, `replace`, and `edit_file`. The tests aim to verify expected TUI feedback (diffs, prompts) and tool functionality under various conditions.
 
@@ -10,7 +10,7 @@ This document outlines a test suite for evaluating the behavior and effectivenes
         ```markdown
         # The Tale of the Wandering Words
 
-        Once upon a time, in a digital kingdom, there lived a brave little variable named `hero`.
+        Once upon a time, in in a digital kingdom, there lived a brave little variable named `hero`.
         `hero` was always looking for adventure, but sometimes, `hero` would get lost.
         The wise old function, `guide_path`, always knew where `hero` should go.
         One day, `hero` decided to explore the `dark_forest` of the codebase.
@@ -37,6 +37,8 @@ This document outlines a test suite for evaluating the behavior and effectivenes
     *   The TUI displays a `write_file` tool call.
     *   Upon approval, the file is overwritten.
     *   The TUI then displays a clear, line-by-line diff showing the changes (insertions/deletions) between the original and modified content.
+*   **Actual Result:** Worked as expected. The TUI showed the `WriteFile` tool call, a clear diff, and prompted for "Allow modification: Yes, No".
+*   **Informal Observation:** This method worked splendidly, showing the right diffs and allowing user acceptance.
 
 ### Test Case 2: `replace` (Exact Match - Single Occurrence)
 
@@ -50,6 +52,8 @@ This document outlines a test suite for evaluating the behavior and effectivenes
     *   The TUI displays a `replace` tool call.
     *   A clear, line-by-line diff of the proposed change is presented for pre-approval.
     *   Upon approval, the file is modified.
+*   **Actual Result:** Worked as expected. The TUI showed the "Edit" tool call, a clear diff, and prompted for "Apply this change?".
+*   **Informal Observation:** Worked, but showed "Edit" tool. This is the "brittle" way users complain about.
 
 ### Test Case 3: `replace` (Brittle Match - Multi-line, Subtle Difference)
 
@@ -62,6 +66,8 @@ This document outlines a test suite for evaluating the behavior and effectivenes
 *   **Expected Outcome:**
     *   The `replace` tool reports "0 occurrences found" or a similar failure message.
     *   No changes are applied to the file.
+*   **Actual Result:** First attempt to fail unexpectedly succeeded (replacement worked). Second attempt (with intentionally omitted line) failed as planned, reporting "0 occurrences found".
+*   **Informal Observation:** The `replace` tool's strict matching is indeed a source of brittleness and user complaints.
 
 ### Test Case 4: `edit_file` (Dry Run - Pre-approval Diff)
 
@@ -74,6 +80,8 @@ This document outlines a test suite for evaluating the behavior and effectivenes
     *   The TUI displays an `edit_file` tool call with `dryRun=True`.
     *   A clear, `git`-style diff of the proposed changes is presented for pre-approval.
     *   The file `test_case_edit_file_dryrun.md` remains unchanged on disk.
+*   **Actual Result:** Worked as expected. The TUI showed the `edit_file` tool call with `dryRun=True`, a clear diff, and prompted for "Apply this change?". The file remained unchanged on disk.
+*   **Informal Observation:** All looks as expected. User accepts the tool usage, but notes it is non-interactive later (no added QC step).
 
 ### Test Case 5: `edit_file` (Execution - Apply Changes)
 
@@ -86,6 +94,8 @@ This document outlines a test suite for evaluating the behavior and effectivenes
     *   The TUI displays an `edit_file` tool call.
     *   Upon approval, the file is modified according to the `edits`.
     *   The TUI displays a post-operation diff summarizing the changes.
+*   **Actual Result:** Worked as expected. The TUI showed the `edit_file` tool call, a clear diff, and prompted for "Apply this change?". The file was modified on disk.
+*   **Informal Observation:** Very good!
 
 ## Cleanup
 
