@@ -1,5 +1,5 @@
 # How to Modify the Gemini CLI System Message
-Ver. 2.1
+Ver. 2.2
 
 # Theory: 
 The Gemini CLI's runtime system message is loaded from a Markdown file specified by the `GEMINI_SYSTEM_MD` environment variable, if present, otherwise from hardcoded strings in:
@@ -54,7 +54,7 @@ The `GEMINI_SYSTEM_MD` environment variable provides flexible control over the s
 
 *   **Default Behavior:** If `GEMINI_SYSTEM_MD` is not set, or is explicitly set to `"0"` or `"false"`, the CLI uses its internal, hardcoded default system prompt.
 *   **Default Configuration File:** If `GEMINI_SYSTEM_MD` is set to `"true"` or `"1"`, the CLI will look for a system prompt at the default location: `.gemini/system.md`.
-    *   If this file does not exist, the CLI will create it and write the internal default system prompt to it.
+    *   **Important:** This file **must exist**. If it does not, the CLI will throw an error.
     *   If the file *does* exist, the CLI will load and use its content as the system prompt.
 *   **Custom File Path:** If `GEMINI_SYSTEM_MD` is set to a file path (e.g., `"/path/to/my_prompt.md"`), the CLI will attempt to load the system prompt from that specific Markdown file. The path can be absolute or relative, and it supports tilde expansion (e.g., `~/my_prompt.md`). An error will be thrown if the specified file does not exist.
 
@@ -70,16 +70,19 @@ The `GEMINI_WRITE_SYSTEM_MD` environment variable allows you to write the CLI's 
 If you want to modify the default system prompt, follow these steps:
 
 1.  **Generate the Default `system.md`:**
-    *   Set the `GEMINI_SYSTEM_MD` environment variable to `"true"` or `"1"`.
-        *   Example (Linux/macOS): `export GEMINI_SYSTEM_MD="true"`
-        *   Example (Windows PowerShell): `$env:GEMINI_SYSTEM_MD="1"`
-    *   Run the Gemini CLI. This will create the `.gemini/system.md` file in your project's root directory if it doesn't already exist, populated with the default system prompt.
+    *   Set the `GEMINI_WRITE_SYSTEM_MD` environment variable to `"true"` or `"1"` (or a specific file path if you prefer a different location).
+        *   Example (Linux/macOS): `export GEMINI_WRITE_SYSTEM_MD="true"`
+        *   Example (Windows PowerShell): `$env:GEMINI_WRITE_SYSTEM_MD="1"`
+    *   Run the Gemini CLI. This will create the `.gemini/system.md` file in your project's root directory (or your specified path) populated with the default system prompt.
 
 2.  **Locate and Edit `system.md`:**
-    *   Find the newly created or existing file at `.gemini/system.md`.
+    *   Find the newly created or existing file at `.gemini/system.md` (or your custom path).
     *   Open this file in your preferred text editor.
     *   Modify the content of `system.md` to customize the system prompt according to your needs.
 
-3.  **Save and Restart:**
+3.  **Save and Restart with `GEMINI_SYSTEM_MD`:**
     *   Save the changes to the `system.md` file.
-    *   Restart the Gemini CLI (with `GEMINI_SYSTEM_MD` still set to `"true"` or `"1"`). The CLI will now load and use your modified system prompt from `.gemini/system.md` for all subsequent interactions.
+    *   Set the `GEMINI_SYSTEM_MD` environment variable to `"true"` or `"1"` (or the custom file path you used in step 1).
+        *   Example (Linux/macOS): `export GEMINI_SYSTEM_MD="true"`
+        *   Example (Windows PowerShell): `$env:GEMINI_SYSTEM_MD="1"`
+    *   Restart the Gemini CLI. The CLI will now load and use your modified system prompt from `.gemini/system.md` for all subsequent interactions.
