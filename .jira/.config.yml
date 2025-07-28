@@ -1,0 +1,6 @@
+jira:
+  cloud: true
+  host: https://zezena.atlassian.net
+  user: prykryk+gemini01@gmail.com
+  token: ATATT3xFfGF0cA4oYh746qdwg4nD0D0PF2hT58hTh3ezfrQdlw46tL8ok8NUvPWi1_cssjyWu9oldF41g-oJOUct-yyvVHJdrdINo_yUqbOjrm0d1NVLl52ZDMcjMjZy0UITJjLCVx2weLzQFkdDjuyqLNFS_htx5Yxhh-i_pkQW6ygpd-yrZZo=30B12925
+  auth-type: bearer
