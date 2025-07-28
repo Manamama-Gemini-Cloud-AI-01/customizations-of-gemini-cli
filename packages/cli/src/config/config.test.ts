@@ -37,12 +37,20 @@ vi.mock('@google/gemini-cli-core', async () => {
     ...actualServer,
     loadEnvironment: vi.fn(),
     loadServerHierarchicalMemory: vi.fn(
-      (cwd, debug, fileService, extensionPaths) =>
+      (cwd, debug, fileService, extensionPaths, _maxDirs) =>
         Promise.resolve({
           memoryContent: extensionPaths?.join(',') || '',
           fileCount: extensionPaths?.length || 0,
         }),
     ),
+    DEFAULT_MEMORY_FILE_FILTERING_OPTIONS: {
+      respectGitIgnore: false,
+      respectGeminiIgnore: true,
+    },
+    DEFAULT_FILE_FILTERING_OPTIONS: {
+      respectGitIgnore: true,
+      respectGeminiIgnore: true,
+    },
   };
 });
 
@@ -186,6 +194,73 @@ describe('loadCliConfig', () => {
     const settings: Settings = { showMemoryUsage: false };
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getShowMemoryUsage()).toBe(true);
+  });
+
+  it(`should leave proxy to empty by default`, async () => {
+    process.argv = ['node', 'script.js'];
+    const argv = await parseArguments();
+    const settings: Settings = {};
+    const config = await loadCliConfig(settings, [], 'test-session', argv);
+    expect(config.getProxy()).toBeFalsy();
+  });
+
+  const proxy_url = 'http://localhost:7890';
+  const testCases = [
+    {
+      input: {
+        env_name: 'https_proxy',
+        proxy_url,
+      },
+      expected: proxy_url,
+    },
+    {
+      input: {
+        env_name: 'http_proxy',
+        proxy_url,
+      },
+      expected: proxy_url,
+    },
+    {
+      input: {
+        env_name: 'HTTPS_PROXY',
+        proxy_url,
+      },
+      expected: proxy_url,
+    },
+    {
+      input: {
+        env_name: 'HTTP_PROXY',
+        proxy_url,
+      },
+      expected: proxy_url,
+    },
+  ];
+  testCases.forEach(({ input, expected }) => {
+    it(`should set proxy to ${expected} according to environment variable [${input.env_name}]`, async () => {
+      process.env[input.env_name] = input.proxy_url;
+      process.argv = ['node', 'script.js'];
+      const argv = await parseArguments();
+      const settings: Settings = {};
+      const config = await loadCliConfig(settings, [], 'test-session', argv);
+      expect(config.getProxy()).toBe(expected);
+    });
+  });
+
+  it('should set proxy when --proxy flag is present', async () => {
+    process.argv = ['node', 'script.js', '--proxy', 'http://localhost:7890'];
+    const argv = await parseArguments();
+    const settings: Settings = {};
+    const config = await loadCliConfig(settings, [], 'test-session', argv);
+    expect(config.getProxy()).toBe('http://localhost:7890');
+  });
+
+  it('should prioritize CLI flag over environment variable for proxy (CLI http://localhost:7890, environment variable http://localhost:7891)', async () => {
+    process.env['http_proxy'] = 'http://localhost:7891';
+    process.argv = ['node', 'script.js', '--proxy', 'http://localhost:7890'];
+    const argv = await parseArguments();
+    const settings: Settings = {};
+    const config = await loadCliConfig(settings, [], 'test-session', argv);
+    expect(config.getProxy()).toBe('http://localhost:7890');
   });
 });
 
@@ -412,6 +487,11 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
         '/path/to/ext3/context1.md',
         '/path/to/ext3/context2.md',
       ],
+      {
+        respectGitIgnore: false,
+        respectGeminiIgnore: true,
+      },
+      undefined, // maxDirs
     );
   });
 
@@ -930,32 +1010,5 @@ describe('loadCliConfig ideMode', () => {
     const settings: Settings = { ideMode: true };
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getIdeMode()).toBe(false);
-  });
-
-  it('should add _ide_server when ideMode is true', async () => {
-    process.argv = ['node', 'script.js', '--ide-mode'];
-    const argv = await parseArguments();
-    process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
-    const settings: Settings = {};
-    const config = await loadCliConfig(settings, [], 'test-session', argv);
-    expect(config.getIdeMode()).toBe(true);
-    const mcpServers = config.getMcpServers();
-    expect(mcpServers['_ide_server']).toBeDefined();
-    expect(mcpServers['_ide_server'].httpUrl).toBe('http://localhost:3000/mcp');
-    expect(mcpServers['_ide_server'].description).toBe('IDE connection');
-    expect(mcpServers['_ide_server'].trust).toBe(false);
-  });
-
-  it('should throw an error if ideMode is true and no port is set', async () => {
-    process.argv = ['node', 'script.js', '--ide-mode'];
-    const argv = await parseArguments();
-    process.env.TERM_PROGRAM = 'vscode';
-    const settings: Settings = {};
-    await expect(
-      loadCliConfig(settings, [], 'test-session', argv),
-    ).rejects.toThrow(
-      "Could not run in ide mode, make sure you're running in vs code integrated terminal. Try running in a fresh terminal.",
-    );
   });
 });
