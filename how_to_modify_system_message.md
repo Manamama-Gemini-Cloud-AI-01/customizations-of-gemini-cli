@@ -4,9 +4,9 @@ Ver. 3.1
 # Theory: 
 The Gemini CLI's runtime system message is loaded from a Markdown file specified by the `GEMINI_SYSTEM_MD` environment variable, if present, otherwise from hardcoded strings in:
 
-packages/core/src/core/prompts.ts
+`/packages/core/src/core/prompts.ts`
 
-/data/data/com.termux/files/home/downloads/GitHub/gemini-cli/packages/core/src/core/prompts.ts.md
+`/gemini-cli/packages/core/src/core/prompts.ts.md`
 
  
 This allows you to customize the initial instructions and persona of the Gemini model.
