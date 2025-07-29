@@ -1,5 +1,5 @@
 # How to Modify the Gemini CLI System Message
-Ver. 3.0
+Ver. 3.1
 
 # Theory: 
 The Gemini CLI's runtime system message is loaded from a Markdown file specified by the `GEMINI_SYSTEM_MD` environment variable, if present, otherwise from hardcoded strings in:
@@ -90,38 +90,4 @@ If you want to modify the default system prompt, follow these steps:
 
 
 # Practice: 
-
-Yet again, when user does:
-
-
-`export GEMINI_WRITE_SYSTEM_MD=1` so that `GEMINI_WRITE_SYSTEM_MD` is set to `"true"` or `"1"`,
-
- 
-user sees: 
-```
-Tips for getting started:
-1. Ask questions, edit files, or run commands.
-2. Be specific for the best results.
-3. /help for more information.
-
-╭────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                                                                                                                            │
-│ Get started                                                                                                                                                                                │
-│                                                                                                                                                                                            │
-│ How would you like to authenticate for this project?                                                                                                                                       │
-│                                                                                                                                                                                            │
-│   1. Login with Google                                                                                                                                                                     │
-│ ● 2. Use Gemini API Key                                                                                                                                                                    │
-│   3. Vertex AI                                                                                                                                                                             │
-│                                                                                                                                                                                            │
-│ Failed to login. Message: Failed to initialize chat: missing system prompt file '/data/data/com.termux/files/home/downloads/GitHub/gemini-cli/.gemini/system.md'                           │
-│                                                                                                                                                                                            │
-│ (Use Enter to select)                                                 
-```
-
-so User must :
-A. Control break or escape
-B. unset GEMINI_WRITE_SYSTEM_MD
-C. run `gemini` to be able to talk to Gemini Cloud AI. 
-
-hm? Why this does not work?  
+It works for the User. 
