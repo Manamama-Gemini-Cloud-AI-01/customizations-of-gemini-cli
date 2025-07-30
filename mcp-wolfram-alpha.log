@@ -105,3 +105,14 @@
 2025-07-28T18:18:17.764Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
 2025-07-28T18:18:17.764Z	[34mINFO[0m	server/server.go:62	starting MCP server
 2025-07-28T20:48:51.627Z	[34mINFO[0m	server/server.go:70	server shutting down
+2025-07-30T04:16:42.972Z	[34mINFO[0m	logger/logger.go:44	Logger initialized	{"debug": true, "log_path": "mcp-wolfram-alpha.log"}
+2025-07-30T04:16:42.973Z	[34mINFO[0m	server/server.go:17	starting MCP Wolfram Alpha Server
+2025-07-30T04:16:42.973Z	[35mDEBUG[0m	server/server.go:26	creating Wolfram Alpha server
+2025-07-30T04:16:42.973Z	[34mINFO[0m	server/wolfram.go:21	creating new Wolfram Alpha server	{"app_id_set": true, "timeout": 30, "use_bearer": false}
+2025-07-30T04:16:42.973Z	[35mDEBUG[0m	server/server.go:44	creating MCP server	{"name": "mcp-wolfram-alpha", "version": " (9f60fcc)"}
+2025-07-30T04:16:42.973Z	[35mDEBUG[0m	server/server.go:55	registering tools
+2025-07-30T04:16:42.973Z	[34mINFO[0m	tools/tools.go:10	registering all tools
+2025-07-30T04:16:42.973Z	[34mINFO[0m	tools/wolfram_query.go:29	registering wolfram_query tool
+2025-07-30T04:16:42.973Z	[34mINFO[0m	tools/tools.go:17	all tools registered successfully
+2025-07-30T04:16:42.973Z	[34mINFO[0m	server/server.go:62	starting MCP server
+2025-07-30T04:24:07.451Z	[34mINFO[0m	server/server.go:70	server shutting down
