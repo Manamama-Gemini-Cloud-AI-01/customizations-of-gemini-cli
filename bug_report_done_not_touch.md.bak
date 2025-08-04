@@ -1,0 +1,80 @@
+# Task: Report Bug in `include-directories` Configuration
+
+**Bug Title:** Gemini CLI tools ignore `include-directories` in `.gemini/settings.json`
+
+**Description:**
+The Gemini CLI's file system tools, such as `list_directory` and `glob`, do not respect the `include-directories` configuration when it is specified in the `.gemini/settings.json` file. This prevents access to directories outside the primary workspace, even when they are explicitly included in the configuration. The issue appears to be a bug in how the CLI tools parse or apply the settings from the JSON file, as using the `--include-directories` command-line flag at startup works as expected.
+
+**Current Understanding & Symptoms:**
+- **Confirmed Behavior:** Using the `--include-directories` command-line flag successfully adds external directories to the workspace, allowing CLI tools to access them.
+- **"Silent Errors":** When `include-directories` are specified in `.gemini/settings.json` (or global settings), the CLI tools do not throw an explicit error about the configuration itself. Instead, they behave as if the directories were never included, resulting in "Path must be within one of the workspace directories" errors when attempting to access them. This indicates a silent failure in parsing or applying the configuration.
+- **Formal Correctness:** The `.gemini/settings.json` file has been formally validated (e.g., with `jsonlint`), ruling out basic JSON syntax errors.
+- **Path Format:** The paths used in `settings.json` are absolute Ubuntu paths (e.g., `/home/user/downloads`), which are valid for the Ubuntu environment where the CLI is running.
+- **Scope:** The issue appears to affect all file system tools, as `list_directory` is a foundational operation.
+- **Previous Tests & Observations:**
+    - Initial attempts to access a symlinked `docs` directory (pointing outside the primary workspace) failed, leading to the discovery of security restrictions on symlinks.
+    - Despite `settings.json` being configured to include the symlink's target (`/home/user/documents` for Ubuntu), `list_directory` and `glob` still failed.
+    - `run_shell_command` with `ls` *could* access the target directory, confirming OS-level permissions were not the issue.
+    - Multiple informal tests and restarts of the Gemini CLI confirmed the consistent failure of `settings.json` to apply the `include-directories` setting, contrasting with the success of the command-line flag.
+    - Other tools have not been explicitly tested, but it is presumed they would also fail, as `list_directory` is a fundamental operation.
+
+**Test Case: `settings.json` with Analogous Ubuntu Paths**
+
+To further investigate the `settings.json` issue, the local `.gemini/settings.json` file has been updated to include five analogous Ubuntu directories. The user has been asked to restart the Gemini CLI.
+
+**Directories added to `/home/zezen/Downloads/GitHub/gemini-cli/.gemini/settings.json`:**
+```json
+{
+  "contextFileName": ["GEMINI_CORE_INFO.md", "global_context.md"],
+  "include-directories": [
+    "/tmp",
+    "/home/zezen/Documents",
+    "/home/zezen/Downloads",
+    "/home/zezen/.config",
+    "/home/zezen/Pictures"
+  ]
+}
+```
+
+**Test Result:**
+- **Status:** FAILED
+- **Action:** After restarting the CLI, `list_directory(path="/home/zezen/Downloads")` was executed.
+- **Outcome:** The command failed with the error: `Error: Invalid parameters provided. Reason: Path must be within one of the workspace directories: /home/zezen/Downloads/GitHub/gemini-cli`. This confirms the local `settings.json` is not being applied.
+
+**Debug Log Analysis:**
+- **Status:** COMPLETE
+- **Action:** The user restarted the CLI with `gemini -d` and provided the debug log.
+- **Outcome:** The debug log shows detailed messages for the `MemoryDiscovery` process loading `global_context.md`, but there are **no corresponding debug messages** for finding, parsing, or applying the `include-directories` setting from `.gemini/settings.json`. This strongly suggests that the CLI is **completely ignoring the `settings.json` file** for this specific configuration, leading to the "silent failure."
+
+**Test Case: Command-Line `--include-directories` (Ubuntu)**
+
+This test aims to verify if the `--include-directories` command-line flag works on Ubuntu, similar to its confirmed success on Android. This will further isolate the issue to the `settings.json` parsing.
+
+**Action Item:**
+1.  **Restart the Gemini CLI in debug mode with the `include-directories` specified as command-line arguments:**
+    ```bash
+    gemini -d --include-directories /tmp /home/zezen/Documents /home/zezen/Downloads /home/zezen/.config /home/zezen/Pictures
+    ```
+2.  **Once the CLI is running, attempt to list the contents of one of the included directories using the `list_directory` tool.** For example:
+    ```
+    list_directory(path="/home/zezen/Downloads")
+    ```
+3.  **Capture the *entire* output** from your Gemini CLI session, paying close attention to any debug messages and the result of the `list_directory` command.
+
+**Test Result:**
+- **Status:** SUCCESS
+- **Action:** The CLI was restarted with the `--include-directories` flag, and `list_directory` was executed for each of the five included paths: `/tmp`, `/home/zezen/Documents`, `/home/zezen/Downloads`, `/home/zezen/.config`, and `/home/zezen/Pictures`.
+- **Outcome:** All `list_directory` commands were successful, returning the contents of the respective directories. This confirms that the `--include-directories` command-line flag is a reliable workaround for including external directories into the Gemini CLI's workspace on Ubuntu.
+
+**PR Analysis: `include-directories` Implementation**
+
+- **PR #4605:** "feat: Multi-Directory Workspace Support (part1: add `--include-directories` option)"
+    - **Rationale:** To enable users to include files and folders from disparate locations within a single session, creating a virtual workspace.
+    - **Key Finding:** The PR description explicitly states: "In another PR, I'm planning to work on `/directory add <dir>`, `/directory show`, and **configuration supports**." This indicates that **PR #4605 *only* implemented the command-line flag**, and the support for reading `include-directories` from `settings.json` was planned for a *separate, subsequent* PR.
+    - **Conclusion:** This directly explains why our `settings.json` configuration is not working: the feature to read `include-directories` from `settings.json` was not implemented in this PR.
+
+**PR Search for `settings.json` Support:**
+
+- **Action:** Searched for merged PRs mentioning "include-directories" and "config" or "settings" (`gh pr list -R google-gemini/gemini-cli -s merged -S "include-directories config"`).
+- **Outcome:** The search did not yield a specific PR that clearly implemented the `settings.json` support for `include-directories`.
+- **Conclusion:** This further strengthens the conclusion that this planned feature was likely never implemented or merged.

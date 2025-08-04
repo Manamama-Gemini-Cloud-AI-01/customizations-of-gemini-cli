@@ -1,0 +1,82 @@
+zezen@above-hp2-silver:~/Downloads/GitHub/gemini-cli$ gemini -d
+[DEBUG] CLI: Delegating hierarchical memory load to server for CWD: /home/zezen/Downloads/GitHub/gemini-cli (memoryImportFormat: tree)
+[DEBUG] [MemoryDiscovery] Loading server hierarchical memory for CWD: /home/zezen/Downloads/GitHub/gemini-cli (importFormat: tree)
+[DEBUG] [MemoryDiscovery] Searching for GEMINI_CORE_INFO.md starting from CWD: /home/zezen/Downloads/GitHub/gemini-cli
+[DEBUG] [MemoryDiscovery] Determined project root: /home/zezen/Downloads/GitHub/gemini-cli
+[DEBUG] [BfsFileSearch] Scanning [1/200]: batch of 1
+[DEBUG] [BfsFileSearch] Scanning [14/200]: batch of 13
+[DEBUG] [BfsFileSearch] Scanning [29/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [44/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [59/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [74/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [89/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [104/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [119/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [134/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [148/200]: batch of 14
+[DEBUG] [BfsFileSearch] Scanning [163/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [178/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [193/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [200/200]: batch of 7
+[DEBUG] [MemoryDiscovery] Searching for global_context.md starting from CWD: /home/zezen/Downloads/GitHub/gemini-cli
+[DEBUG] [MemoryDiscovery] Determined project root: /home/zezen/Downloads/GitHub/gemini-cli
+[DEBUG] [BfsFileSearch] Scanning [1/200]: batch of 1
+[DEBUG] [BfsFileSearch] Scanning [14/200]: batch of 13
+[DEBUG] [BfsFileSearch] Scanning [29/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [44/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [59/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [74/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [89/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [104/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [119/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [134/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [148/200]: batch of 14
+[DEBUG] [BfsFileSearch] Scanning [163/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [178/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [193/200]: batch of 15
+[DEBUG] [BfsFileSearch] Scanning [200/200]: batch of 7
+[DEBUG] [MemoryDiscovery] Final ordered GEMINI_CORE_INFO.md,global_context.md paths to read: ["/home/zezen/Downloads/GitHub/gemini-cli/global_context.md"]
+[DEBUG] [MemoryDiscovery] Successfully read and processed imports: /home/zezen/Downloads/GitHub/gemini-cli/global_context.md (Length: 11374)
+[DEBUG] [MemoryDiscovery] Combined instructions length: 11460
+[DEBUG] [MemoryDiscovery] Combined instructions (snippet): --- Context from: global_context.md ---
+#ver. 4.1
+
+### **Gemini CLI - Operational Memory & Directives**
+
+...
+
+
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] Proxy established successfully between local STDIO and remote SSEClientTransport
+[1138823] Press Ctrl+C to exit
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Local→Remote] initialize
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] {
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-06-18",
+    "capabilities": {},
+    "clientInfo": {
+      "name": "gemini-cli-mcp-client (via mcp-remote 0.1.18)",
+      "version": "0.0.1"
+    }
+  }
+}
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Remote→Local] 0
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Local→Remote] notifications/initialized
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Local→Remote] prompts/list
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Remote→Local] 1
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Local→Remote] tools/list
+[DEBUG] [MCP STDERR (asana_online_sometimes_hangs)]:  [1138823] [Remote→Local] 2
+
+ ███            █████████  ██████████ ██████   ██████ █████ ██████   █████ █████
+░░░███         ███░░░░░███░░███░░░░░█░░██████ ██████ ░░███ ░░██████ ░░███ ░░███
+  ░░░███      ███     ░░░  ░███  █ ░  ░███░█████░███  ░███  ░███░███ ░███  ░███
+    ░░░███   ░███          ░██████    ░███░░███ ░███  ░███  ░███░░███░███  ░███
+     ███░    ░███    █████ ░███░░█    ░███ ░░░  ░███  ░███  ░███ ░░██████  ░███
+   ███░      ░░███  ░░███  ░███ ░   █ ░███      ░███  ░███  ░███  ░░█████  ░███
+ ███░         ░░█████████  ██████████ █████     █████ █████ █████  ░░█████ █████
+░░░            ░░░░░░░░░  ░░░░░░░░░░ ░░░░░     ░░░░░ ░░░░░ ░░░░░    ░░░░░ ░░░░░
+
+Tips for getting started:
+

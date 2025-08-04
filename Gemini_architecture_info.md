@@ -1,0 +1,1 @@
+/home/zezen/Downloads/GitHub/Puzzles_for_AIs/docs/guides/Gemini_architecture_info.md
