@@ -4,10 +4,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import * as vscode from 'vscode';
-import * as path from 'node:path';
-import { DIFF_SCHEME } from './extension.js';
+import {
+  IdeDiffAcceptedNotificationSchema,
+  IdeDiffClosedNotificationSchema,
+} from '@google/gemini-cli-core';
 import { type JSONRPCNotification } from '@modelcontextprotocol/sdk/types.js';
+import * as path from 'node:path';
+import * as vscode from 'vscode';
+import { DIFF_SCHEME } from './extension.js';
 
 export class DiffContentProvider implements vscode.TextDocumentContentProvider {
   private content = new Map<string, string>();
@@ -52,7 +56,7 @@ export class DiffManager {
   private diffDocuments = new Map<string, DiffInfo>();
 
   constructor(
-    private readonly logger: vscode.OutputChannel,
+    private readonly log: (message: string) => void,
     private readonly diffContentProvider: DiffContentProvider,
   ) {}
 
@@ -126,18 +130,19 @@ export class DiffManager {
       const rightDoc = await vscode.workspace.openTextDocument(uriToClose);
       const modifiedContent = rightDoc.getText();
       await this.closeDiffEditor(uriToClose);
-      this.onDidChangeEmitter.fire({
-        jsonrpc: '2.0',
-        method: 'ide/diffClosed',
-        params: {
-          filePath,
-          content: modifiedContent,
-        },
-      });
-      vscode.window.showInformationMessage(`Diff for ${filePath} closed.`);
-    } else {
-      vscode.window.showWarningMessage(`No open diff found for ${filePath}.`);
+      this.onDidChangeEmitter.fire(
+        IdeDiffClosedNotificationSchema.parse({
+          jsonrpc: '2.0',
+          method: 'ide/diffClosed',
+          params: {
+            filePath,
+            content: modifiedContent,
+          },
+        }),
+      );
+      return modifiedContent;
     }
+    return;
   }
 
   /**
@@ -146,9 +151,7 @@ export class DiffManager {
   async acceptDiff(rightDocUri: vscode.Uri) {
     const diffInfo = this.diffDocuments.get(rightDocUri.toString());
     if (!diffInfo) {
-      this.logger.appendLine(
-        `No diff info found for ${rightDocUri.toString()}`,
-      );
+      this.log(`No diff info found for ${rightDocUri.toString()}`);
       return;
     }
 
@@ -156,14 +159,16 @@ export class DiffManager {
     const modifiedContent = rightDoc.getText();
     await this.closeDiffEditor(rightDocUri);
 
-    this.onDidChangeEmitter.fire({
-      jsonrpc: '2.0',
-      method: 'ide/diffAccepted',
-      params: {
-        filePath: diffInfo.originalFilePath,
-        content: modifiedContent,
-      },
-    });
+    this.onDidChangeEmitter.fire(
+      IdeDiffAcceptedNotificationSchema.parse({
+        jsonrpc: '2.0',
+        method: 'ide/diffAccepted',
+        params: {
+          filePath: diffInfo.originalFilePath,
+          content: modifiedContent,
+        },
+      }),
+    );
   }
 
   /**
@@ -172,9 +177,7 @@ export class DiffManager {
   async cancelDiff(rightDocUri: vscode.Uri) {
     const diffInfo = this.diffDocuments.get(rightDocUri.toString());
     if (!diffInfo) {
-      this.logger.appendLine(
-        `No diff info found for ${rightDocUri.toString()}`,
-      );
+      this.log(`No diff info found for ${rightDocUri.toString()}`);
       // Even if we don't have diff info, we should still close the editor.
       await this.closeDiffEditor(rightDocUri);
       return;
@@ -184,14 +187,16 @@ export class DiffManager {
     const modifiedContent = rightDoc.getText();
     await this.closeDiffEditor(rightDocUri);
 
-    this.onDidChangeEmitter.fire({
-      jsonrpc: '2.0',
-      method: 'ide/diffClosed',
-      params: {
-        filePath: diffInfo.originalFilePath,
-        content: modifiedContent,
-      },
-    });
+    this.onDidChangeEmitter.fire(
+      IdeDiffClosedNotificationSchema.parse({
+        jsonrpc: '2.0',
+        method: 'ide/diffClosed',
+        params: {
+          filePath: diffInfo.originalFilePath,
+          content: modifiedContent,
+        },
+      }),
+    );
   }
 
   private addDiffDocument(uri: vscode.Uri, diffInfo: DiffInfo) {
