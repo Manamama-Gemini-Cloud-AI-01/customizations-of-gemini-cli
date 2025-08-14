@@ -248,6 +248,46 @@ In addition to a project settings file, a project's `.gemini` directory can cont
     "excludedProjectEnvVars": ["DEBUG", "DEBUG_MODE", "NODE_ENV"]
     ```
 
+- **`includeDirectories`** (array of strings):
+  - **Description:** Specifies an array of additional absolute or relative paths to include in the workspace context. This allows you to work with files across multiple directories as if they were one. Paths can use `~` to refer to the user's home directory. This setting can be combined with the `--include-directories` command-line flag.
+  - **Default:** `[]`
+  - **Example:**
+    ```json
+    "includeDirectories": [
+      "/path/to/another/project",
+      "../shared-library",
+      "~/common-utils"
+    ]
+    ```
+
+- **`loadMemoryFromIncludeDirectories`** (boolean):
+  - **Description:** Controls the behavior of the `/memory refresh` command. If set to `true`, `GEMINI.md` files should be loaded from all directories that are added. If set to `false`, `GEMINI.md` should only be loaded from the current directory.
+  - **Default:** `false`
+  - **Example:**
+    ```json
+    "loadMemoryFromIncludeDirectories": true
+    ```
+
+- **`chatCompression`** (object):
+  - **Description:** Controls the settings for chat history compression, both automatic and
+    when manually invoked through the /compress command.
+  - **Properties:**
+    - **`contextPercentageThreshold`** (number): A value between 0 and 1 that specifies the token threshold for compression as a percentage of the model's total token limit. For example, a value of `0.6` will trigger compression when the chat history exceeds 60% of the token limit.
+  - **Example:**
+    ```json
+    "chatCompression": {
+      "contextPercentageThreshold": 0.6
+    }
+    ```
+
+- **`showLineNumbers`** (boolean):
+  - **Description:** Controls whether line numbers are displayed in code blocks in the CLI output.
+  - **Default:** `true`
+  - **Example:**
+    ```json
+    "showLineNumbers": false
+    ```
+
 ### Example `settings.json`:
 
 ```json
@@ -280,7 +320,9 @@ In addition to a project settings file, a project's `.gemini` directory can cont
       "tokenBudget": 100
     }
   },
-  "excludedProjectEnvVars": ["DEBUG", "DEBUG_MODE", "NODE_ENV"]
+  "excludedProjectEnvVars": ["DEBUG", "DEBUG_MODE", "NODE_ENV"],
+  "includeDirectories": ["path/to/dir1", "~/path/to/dir2", "../path/to/dir3"],
+  "loadMemoryFromIncludeDirectories": true
 }
 ```
 
@@ -380,6 +422,13 @@ Arguments passed directly when running the CLI can override other configurations
   - Displays the current memory usage.
 - **`--yolo`**:
   - Enables YOLO mode, which automatically approves all tool calls.
+- **`--approval-mode <mode>`**:
+  - Sets the approval mode for tool calls. Available modes:
+    - `default`: Prompt for approval on each tool call (default behavior)
+    - `auto_edit`: Automatically approve edit tools (replace, write_file) while prompting for others
+    - `yolo`: Automatically approve all tool calls (equivalent to `--yolo`)
+  - Cannot be used together with `--yolo`. Use `--approval-mode=yolo` instead of `--yolo` for the new unified approach.
+  - Example: `gemini --approval-mode auto_edit`
 - **`--telemetry`**:
   - Enables [telemetry](../telemetry.md).
 - **`--telemetry-target`**:
@@ -475,7 +524,7 @@ Sandboxing is disabled by default, but you can enable it in a few ways:
 
 - Using `--sandbox` or `-s` flag.
 - Setting `GEMINI_SANDBOX` environment variable.
-- Sandbox is enabled in `--yolo` mode by default.
+- Sandbox is enabled when using `--yolo` or `--approval-mode=yolo` by default.
 
 By default, it uses a pre-built `gemini-cli-sandbox` Docker image.
 
