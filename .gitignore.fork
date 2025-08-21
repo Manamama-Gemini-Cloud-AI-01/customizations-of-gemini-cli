@@ -40,5 +40,11 @@ packages/cli/src/generated/
 packages/core/src/generated/
 .integration-tests/
 packages/vscode-ide-companion/*.vsix
+<<<<<<< HEAD
 puzzles/
 mcp-wolfram-alpha.log
+=======
+
+# GHA credentials
+gha-creds-*.json
+>>>>>>> 299bf58309a0950ac81ae051b02ec64463ebd153
